@@ -1,48 +1,51 @@
-# EX 4D DYNAMIC PROGRAMMING – 4
+# EX 4C DYNAMIC PROGRAMMING – 3
 ## DATE:
 ## AIM:
-To find the minimum number of operations to convert str1 to str2 using Naive recursive method.
+Given a sequence, find the length of the longest palindromic subsequence in it.
+
+
+
+
 
 ## Algorithm
-1.Base case 1: If str1 is empty, return the length of str2 (all insertions).
+1.Initialize the DP table: Create a 2D table dp[n][n] where n is the length of the sequence, and initialize each dp[i][i] = 1 (single characters are palindromes of length 1).
 
-2.Base case 2: If str2 is empty, return the length of str1 (all deletions).
+2.Fill the DP table: For each pair of indices (i, j), if sequence[i] == sequence[j], set dp[i][j] = dp[i+1][j-1] + 2; otherwise, set dp[i][j] = max(dp[i+1][j], dp[i][j-1]).
 
-3.If characters match: If str1[i] == str2[j], no operation is needed, so call the function recursively with str1[i+1] and str2[j+1].
+3.Iterate over subsequences: Loop through subsequences of increasing lengths to fill the DP table.
 
-4.If characters don't match: Consider all three possible operations (insert, delete, or replace) and recursively find the minimum number of operations.
+4.Track the longest length: The value at dp[0][n-1] holds the length of the longest palindromic subsequence.
 
-5.Return the minimum operations: Return the minimum value obtained from the insert, delete, and replace operations.
+5.Return the length: Return the value stored in dp[0][n-1], which is the length of the longest palindromic subsequence.
 
 ## Program:
 ~~~
-
-Program to implement to find the minimum number of operations to convert str1 to str2 using Naive recursive method
+Program to implement to find the length of the longest palindromic subsequence in it
 
 Developed by: KAMALESHWAR KV
-Register Number:  212223110039
+Register Number: 212223240063
 
-def LD(s, t):
-    #########  Add your code here ###########
-    if s == "":
-        return len(t)
-    if t == "":
-        return len(s)
-    if s[-1] == t[-1]:
-        cost = 0
+dp = [[-1 for i in range(1001)]for j in range(1001)]
+def lps(s1, s2, n1, n2):
+    if (n1 == 0 or n2 == 0):
+        return 0
+    if (dp[n1][n2] != -1):
+        return dp[n1][n2]
+    if (s1[n1 - 1] == s2[n2 - 1]):
+        dp[n1][n2] = 1 + lps(s1, s2, n1 - 1, n2 - 1)
+        return dp[n1][n2]
     else:
-        cost = 1
-    res = min([LD(s[:-1], t)+1, LD(s, t[:-1])+1, LD(s[:-1], t[:-1]) + cost])
-    return res
-str1=input()
-str2=input()
-print('Edit Distance',LD(str1,str2))
+        dp[n1][n2] = max(lps(s1, s2, n1 - 1, n2), lps(s1, s2, n1, n2 - 1))
+        return dp[n1][n2]
+seq = input()
+n = len(seq)
+s2 = seq
+s2 = s2[::-1]
+print(f"The length of the LPS is",lps(s2, seq, n, n))
 ~~~
 
-
-
 ## Output:
-![image](https://github.com/user-attachments/assets/5493659f-e1bd-4422-b666-dadd2d05a2f9)
+![image](https://github.com/user-attachments/assets/842567b0-2589-487c-b57b-fac462b8551f)
 
 ## Result:
-Thus the program was executed successfully for finding edit distance between two strings.
+Thus the program was executed successfully for finding the length of longest palindromic string.
